@@ -9,6 +9,11 @@ import org.slf4j.LoggerFactory;
 /**
  * @author pengweichao
  * @date 2019/8/13
+ *
+ * rpc或http请求可能会超时，此时期望程序可进行有限次数的重试以减少网络波动对系统的影响，因此提供此工具用于
+ * 对需要重试的方法做自动重试。目标方法需要在内部逻辑中判定方法是否需要重试如重试需要抛出 RetryException 异常
+ * util方法会捕获此异常进而对方法进行重试，如方法正常返回则直接返回结果，如遇到其他异常则终止执行直接抛出异常终止
+ * 运行
  */
 public class RetryUtils {
 
@@ -42,7 +47,7 @@ public class RetryUtils {
                 }
             }catch (Exception e){
                 log.error("执行重试出现异常e=",e);
-                break;
+                throw e;
             }
 
         }
