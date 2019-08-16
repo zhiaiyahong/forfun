@@ -1,4 +1,4 @@
-package fun.annotation;
+package fun.function;
 
 import fun.exception.RetryException;
 
