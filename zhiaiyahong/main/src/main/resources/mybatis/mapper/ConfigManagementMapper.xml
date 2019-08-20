@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fun.dao.ConfigManagementDAO">
+
+    <sql id="allColumns">
+        config_key as configKey,
+        config_value as configValue,
+        version as version,
+      is_del as isDel
+    </sql>
+
+    <select id="selectByIsDel" resultType="fun.model.ConfigModel">
+        SELECT <include refid="allColumns"/> FROM config_management
+        WHERE is_del = #{isDel}
+    </select>
+
+
+    <select id="selectByVersion" resultType="fun.model.ConfigModel">
+        SELECT <include refid="allColumns"/> FROM config_management
+        WHERE version > #{version}
+    </select>
+
+
+    <select id="selectMaxVersion" resultType="java.lang.Long">
+        SELECT max(version) FROM config_management
+    </select>
+</mapper>
