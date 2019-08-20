@@ -1,6 +1,7 @@
 package fun.service;
 
 import fun.model.ConfigModel;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -28,36 +29,50 @@ public class ConfigManagement {
      */
     private static final int NORMAL_STATUS = 0;
     /**
-     * 配置缓存，默认大小设置为128，一般项目128个配置够用了，每个配置大小最大设为1024字节，这样保证内存占用在128kb左右
+     * 配置缓存，默认大小设置为256
      */
-    private Map<String,String> configCache = new ConcurrentHashMap<>(128);
+    private Map<String,String> configCache = new ConcurrentHashMap<>(256);
 
     /**
      * 配置读取接口
      */
     private ConfigRead configRead;
 
-    public boolean init(){
+    public void init(){
         log.info("configCache开始加载");
-        boolean result = cacheConfig();
+         cacheConfig();
         updateConfigCacheBySecond();
-        log.info("configCache加载完毕,result:[{}]",result);
-        return result;
+        log.info("configCache加载完毕");
+    }
+
+    public String get(String configKey){
+        if(StringUtils.isEmpty(configKey)){
+            log.warn("key为null,无法获取数据");
+            return null;
+        }
+        if(!configCache.containsKey(configKey)){
+            log.warn("key不存在,无法获取数据");
+            return null;
+        }
+       return configCache.get(configKey);
     }
 
     public void setConfigRead(ConfigRead configRead){
         this.configRead = configRead;
     }
 
-    private boolean cacheConfig(){
+    private void cacheConfig(){
         List<ConfigModel> list = configRead.getConfigList();
         if(CollectionUtils.isEmpty(list)){
             log.warn("配置列表为空,未缓存数据");
-            return true;
+            return;
         }
         CONFIG_VERSION = configRead.getLastVersion();
         configCache = list.stream().collect(Collectors.toMap(ConfigModel::getConfigKey,ConfigModel::getConfigValue));
-        return CollectionUtils.isEmpty(configCache);
+        if(configCache.size() > 128){
+            log.warn("配置个数已超过128个,请减少配置,当前配置个数:{}",configCache.size());
+        }
+        log.info("配置加载完毕,config:{}",configCache);
     }
 
     private void updateConfigCache(){
@@ -88,6 +103,9 @@ public class ConfigManagement {
                 log.warn("出现异常配置,新增态但状态异常,config:{}",configModel);
             }
         });
+        if(configCache.size() > 128){
+            log.warn("配置个数已超过128个,请减少配置,当前配置个数:{}",configCache.size());
+        }
     }
 
     private void updateConfigCacheBySecond(){
