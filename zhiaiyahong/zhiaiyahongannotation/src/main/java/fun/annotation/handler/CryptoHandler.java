@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
  * @date 2019/7/26
  */
 public abstract class CryptoHandler {
-    private final Logger log = LoggerFactory.getLogger(CryptoHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(CryptoHandler.class);
     /**
      * 加密方法
      * @param input

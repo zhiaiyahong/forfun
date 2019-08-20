@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class MethodLogAspect {
-    private final Logger log = LoggerFactory.getLogger(MethodLogAspect.class);
+    private static final Logger log = LoggerFactory.getLogger(MethodLogAspect.class);
 
 
     @Pointcut("@annotation(fun.annotation.MethodLog)")

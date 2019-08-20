@@ -1,7 +1,7 @@
 package fun.annotation.handler;
 
 
-import fun.utils.HexUtils;
+import fun.utils.HexUtil;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -38,7 +38,7 @@ public class Aes256CryptoHandler extends CryptoHandler{
             cipher.init(1, key);
             byte[] byteEncode = input.getBytes(CHARSET_NAME);
             byte[] byteAES = cipher.doFinal(byteEncode);
-            return HexUtils.byteArr2HexStr(byteAES);
+            return HexUtil.byteArr2HexStr(byteAES);
         } catch (Exception e) {
            throw new RuntimeException(e);
         }
@@ -62,7 +62,7 @@ public class Aes256CryptoHandler extends CryptoHandler{
             SecretKeySpec key = new SecretKeySpec(raw, GENERATOR_TYPE);
             Cipher cipher = Cipher.getInstance(GENERATOR_TYPE);
             cipher.init(2, key);
-            byte[] byteContent = HexUtils.hexStr2ByteArr(input);
+            byte[] byteContent = HexUtil.hexStr2ByteArr(input);
             byte[] byteDecode = cipher.doFinal(byteContent);
             return new String(byteDecode, CHARSET_NAME);
         }  catch (Exception e) {

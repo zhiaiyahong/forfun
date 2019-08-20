@@ -1,7 +1,7 @@
 package fun.annotation.handler;
 
 
-import fun.utils.HexUtils;
+import fun.utils.HexUtil;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -28,7 +28,7 @@ public class TripleDesCryptoHandler extends CryptoHandler {
             SecretKey desKey = new SecretKeySpec(build3DesKey(secretKey), ALGORITHM);    //生成密钥
             Cipher c1 = Cipher.getInstance(ALGORITHM);    //实例化负责加密/解密的Cipher工具类
             c1.init(Cipher.ENCRYPT_MODE, desKey);    //初始化为加密模式
-            return HexUtils.byteArr2HexStr(c1.doFinal(input.getBytes()));
+            return HexUtil.byteArr2HexStr(c1.doFinal(input.getBytes()));
         } catch (java.security.NoSuchAlgorithmException e1) {
            throw new RuntimeException(e1);
         } catch (javax.crypto.NoSuchPaddingException e2) {
@@ -50,7 +50,7 @@ public class TripleDesCryptoHandler extends CryptoHandler {
             SecretKey desKey = new SecretKeySpec(build3DesKey(secretKey), ALGORITHM);
             Cipher c1 = Cipher.getInstance(ALGORITHM);
             c1.init(Cipher.DECRYPT_MODE, desKey);    //初始化为解密模式
-            return new String (c1.doFinal(HexUtils.hexStr2ByteArr(input)));
+            return new String (c1.doFinal(HexUtil.hexStr2ByteArr(input)));
         } catch (java.security.NoSuchAlgorithmException e1) {
             throw new RuntimeException(e1);
         } catch (javax.crypto.NoSuchPaddingException e2) {

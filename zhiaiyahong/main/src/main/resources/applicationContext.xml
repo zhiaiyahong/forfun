@@ -8,4 +8,10 @@
 
 
     <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+
+    <import resource="classpath*:mybatis/applicationContext-mybatis.xml"></import>
+
+    <bean id="configManagementGen" class="fun.service.ConfigManagement" init-method="init">
+        <property name="configRead" ref="configManagementRepository" />
+    </bean>
 </beans>

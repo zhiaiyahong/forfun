@@ -1,7 +1,7 @@
 package fun.annotation.aspect;
 
 import fun.annotation.handler.CryptoHandler;
-import fun.utils.ReflectionUtils;
+import fun.utils.ReflectionUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 @Component
 public class CryptoAspect {
 
-    private final Logger log = LoggerFactory.getLogger(CryptoAspect.class);
+    private static final Logger log = LoggerFactory.getLogger(CryptoAspect.class);
 
     private final String SPLIT_CHAR = ",";
 
@@ -64,7 +64,7 @@ public class CryptoAspect {
         String cryptoList = crypto.cryptList();
         for(int i = 0;i < args.length; i++){
             Object object = args[i];
-            if(!ReflectionUtils.isPOJO(object) && isContains(cryptoList,parameterNames[i])){
+            if(!ReflectionUtil.isPOJO(object) && isContains(cryptoList,parameterNames[i])){
                  // 基本类型或字符串类型 不可进行操作 警告级别日志
                 log.warn("基本类型无法通过本注解处理,p=属性名:{},对象:{}",parameterNames[i],object);
             }else {
@@ -90,7 +90,7 @@ public class CryptoAspect {
         }
         String cryptoList = crypto.cryptList();
         // 自定义pojo
-        if(ReflectionUtils.isPOJO(object)){
+        if(ReflectionUtil.isPOJO(object)){
             for (Field field : object.getClass().getDeclaredFields()) {
                 field.setAccessible(true);
                 if (isDoCrypto(cryptoList,field)) {

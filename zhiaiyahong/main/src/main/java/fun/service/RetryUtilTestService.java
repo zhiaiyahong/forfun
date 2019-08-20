@@ -1,7 +1,7 @@
 package fun.service;
 
 import fun.exception.RetryException;
-import fun.utils.RetryUtils;
+import fun.utils.RetryUtil;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,11 +13,11 @@ public class RetryUtilTestService {
 
     public void retryPrivateMethod(){
 
-        RetryUtils.doRetry(()->doSomething(1));
+        RetryUtil.doRetry(()->doSomething(1));
 
-        RetryUtils.doRetry(()->doSomething(2));
+        RetryUtil.doRetry(()->doSomething(2));
 
-        RetryUtils.doRetry(()->doSomething(3));
+        RetryUtil.doRetry(()->doSomething(3));
     }
 
     private int doSomething(int in) throws RetryException {
