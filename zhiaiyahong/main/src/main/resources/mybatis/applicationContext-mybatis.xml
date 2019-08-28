@@ -6,9 +6,9 @@
 
 
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" primary="true">
-        <property name="url" value="jdbc:mysql://10.4.44.36:5002/newdev_datacenter?useUnicode=true&amp;characterEncoding=UTF-8" />
-        <property name="username" value="settledev" />
-        <property name="password" value="settledev" />
+        <property name="url" value="jdbc:mysql://172.0.0.1/newdev_datacenter?useUnicode=true&amp;characterEncoding=UTF-8" />
+        <property name="username" value="root" />
+        <property name="password" value="root" />
         <!-- 初始化连接数量 -->
         <property name="initialSize" value="10" />
         <!-- 最小空闲连接数 -->
