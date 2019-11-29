@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhwch.test.dao.IdConfigDAO">
+
+    <sql id="allColumns">
+        biz_name as bizName,
+        step as step,
+        max_id as maxID,
+        version as version,
+        del as del
+    </sql>
+
+    <select id="selectByIsDel" resultType="com.yhwch.idgen.model.IDConfigModel">
+        SELECT <include refid="allColumns"/> FROM id_config
+        WHERE del = #{del}
+    </select>
+
+
+    <select id="selectByVersion" resultType="com.yhwch.idgen.model.IDConfigModel">
+        SELECT <include refid="allColumns"/> FROM id_config
+        WHERE version > #{version}
+    </select>
+
+    <select id="selectByBizName" resultType="com.yhwch.idgen.model.IDConfigModel">
+        SELECT <include refid="allColumns"/> FROM id_config
+        WHERE biz_name = #{bizName}
+    </select>
+
+
+    <select id="selectMaxVersion" resultType="java.lang.Long">
+        SELECT max(version) FROM id_config
+    </select>
+
+    <update id="updateByBizName">
+        update id_config
+        set max_id = max_id + step
+        where biz_name = #{bizName}
+    </update>
+</mapper>
